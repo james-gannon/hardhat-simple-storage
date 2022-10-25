@@ -8,19 +8,19 @@ async function main() {
     )
     console.log("Deploying contract...")
     const simpleStorage = await SimpleStorageFactory.deploy()
-    console.log("Hi there, face here.")
     await simpleStorage.deployed()
     console.log(`Deployed contract to: ${simpleStorage.address}`)
+
     // Check the current network you are running on. Will not call verify function if delpoying to local Hardhat network.
     if (process.env.ETHERSCAN_API_KEY) {
         // Wait 6 block confirmations
         console.log("Sit tight. Waiting for block confirmations...")
-        await simpleStorage.deployTransaction.wait(6)
+        await simpleStorage.deployTransaction.wait(1)
         await verify(simpleStorage.address, [])
     }
 
     const currentValue = await simpleStorage.retrieve()
-    console.log(`Current value is: ${currentValue}`)
+    console.log(`Current value is: ${currentValue}`) // String interpolation
 
     // Update the current value
     const transactionResponse = await simpleStorage.store(7)
@@ -40,7 +40,7 @@ async function verify(contractAddress, args) {
             constructorArguments: args,
         })
     } catch (e) {
-        if (e.message.toLowerCase().includes("Already Verified!")) {
+        if (e.message.toLowerCase().includes("already verified")) {
             console.log("Already Verified!")
         } else {
             console.log(e)
