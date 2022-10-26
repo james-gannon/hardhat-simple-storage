@@ -12,7 +12,7 @@ async function main() {
     console.log(`Deployed contract to: ${simpleStorage.address}`)
 
     // Check the current network you are running on. Will not call verify function if delpoying to local Hardhat network.
-    if (process.env.ETHERSCAN_API_KEY) {
+    if (network.config.chainId === 5 && process.env.ETHERSCAN_API_KEY) {
         // Wait 6 block confirmations
         console.log("Sit tight. Waiting for block confirmations...")
         await simpleStorage.deployTransaction.wait(1)
